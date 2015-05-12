@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Where Did It Go</string>
+    <string name="edit_message">Where is it?</string>
+    <string name="button_save">Save</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+</resources>
