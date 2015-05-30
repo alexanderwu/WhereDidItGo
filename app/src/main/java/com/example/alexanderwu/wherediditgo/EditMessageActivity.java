@@ -30,14 +30,18 @@ public class EditMessageActivity extends ActionBarActivity {
 
         // Commit the edits!
         editor.commit();
+
+        // Go back to DisplayMessageActivity
+        Intent intent = new Intent(this, DisplayMessageActivity.class);
+        startActivity(intent);
     }
 
     public void viewMessage(View view) {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
         // Get myNote from SharedPreferences
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        String message = settings.getString("myNote","");
-        intent.putExtra(EXTRA_MESSAGE, message);
+        //SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        //String message = settings.getString("myNote","");
+        //intent.putExtra(EXTRA_MESSAGE, message);
 
         startActivity(intent);
     }

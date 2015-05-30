@@ -20,7 +20,7 @@ public class MyActivity extends ActionBarActivity {
     }
 
     public void newMessage(View view) {
-        Intent intent = new Intent(this, EditMessageActivity.class);
+        Intent intent = new Intent(this, DisplayMessageActivity.class);
         startActivity(intent);
     }
 
