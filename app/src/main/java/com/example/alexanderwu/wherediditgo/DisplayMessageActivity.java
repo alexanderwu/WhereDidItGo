@@ -4,14 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
 
 public class DisplayMessageActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+         super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_display_message);
+
+        // Create LinearLayout
+        LinearLayout linLayout = new LinearLayout(this);
+        linLayout.setOrientation(LinearLayout.VERTICAL);
+        LayoutParams linLayoutParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        setContentView(linLayout, linLayoutParam);
 
         // Get the message from the intent
         Intent intent = getIntent();
@@ -21,9 +29,11 @@ public class DisplayMessageActivity extends ActionBarActivity {
         TextView textView = new TextView(this);
         textView.setTextSize(30);
         textView.setText(message);
+        textView.setPadding(30,30,30,30);
+        linLayout.addView(textView);
 
         // Set the text view as the activity layout
-        setContentView(textView);
+        setContentView(linLayout);
     }
 
     @Override
