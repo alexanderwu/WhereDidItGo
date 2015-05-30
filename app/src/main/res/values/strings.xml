@@ -6,5 +6,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_display_message">My Message</string>
 
+    <string name="view_message">View note</string>
+
     <string name="hello_world">Hello world!</string>
 </resources>
