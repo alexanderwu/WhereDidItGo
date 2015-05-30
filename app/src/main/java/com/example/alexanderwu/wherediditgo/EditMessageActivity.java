@@ -16,6 +16,12 @@ public class EditMessageActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_message);
+        // Get your saved message
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        String message = settings.getString("myNote","");
+        // Put message in editText
+        EditText editText = (EditText) findViewById(R.id.edit_message);
+        editText.setText(message);
     }
 
     public void saveMessage(View view) {

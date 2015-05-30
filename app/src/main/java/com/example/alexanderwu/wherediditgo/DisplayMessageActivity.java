@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class DisplayMessageActivity extends ActionBarActivity {
@@ -16,33 +14,16 @@ public class DisplayMessageActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_display_message);
-
-        // Create LinearLayout
-        LinearLayout linLayout = new LinearLayout(this);
-        linLayout.setOrientation(LinearLayout.VERTICAL);
-        LayoutParams linLayoutParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        setContentView(linLayout, linLayoutParam);
-
-        // Get the message from the intent
-        //Intent intent = getIntent();
-        //String message = intent.getStringExtra(MyActivity.EXTRA_MESSAGE);
-
-        // Create the text view
-        TextView textView = new TextView(this);
-
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_display_message);
+        // Load my message
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         String message = settings.getString("myNote","");
-
-        textView.setTextSize(30);
+        TextView textView = (TextView) findViewById(R.id.display_message);
         textView.setText(message);
-        textView.setPadding(30,30,30,30);
-        linLayout.addView(textView);
 
         //Create the editButton
-        Button editButton = new Button(this);
-        editButton.setText("Edit Message");
+        Button editButton = (Button) findViewById(R.id.edit_button);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,13 +31,7 @@ public class DisplayMessageActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         });
-        linLayout.addView(editButton);
-
-        // Set the linLayout as the activity layout
-        setContentView(linLayout);
     }
-
-    // Edit Message
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
