@@ -20,9 +20,7 @@ import java.util.ArrayList;
 
 
 public class MyActivity extends ActionBarActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
-    // ### Do I need these?
-    //public final static String PREFS_NAME = "MyPrefsFile";
-    //public final static String EXTRA_MESSAGE = "com.example.alexanderwu.wherediditgo.MESSAGE";
+
     public static final String PREF = "Prefs";
 
     public static final String NOTE_KEY = "NoteKey";
@@ -59,7 +57,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         int count = mSharedPreferences.getInt(COUNT_KEY,0);
         mNameList.add(note);
         mArrayAdapter.notifyDataSetChanged();
-        Toast.makeText(getApplicationContext(), count + " notes saved!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), count + " notes were saved!", Toast.LENGTH_SHORT).show();
     }
     // ###
 
@@ -78,15 +76,17 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
             public void onClick(DialogInterface dialog, int whichButton) {
                 // Grab the EditText's input
                 String inputName = input.getText().toString();
-                // Put it into memory (don't forget to commit!)
-                SharedPreferences.Editor e = mSharedPreferences.edit();
-                e.putString(NOTE_KEY,inputName);
-                if(e.commit()) {
-                    Toast.makeText(getApplicationContext(), inputName + " saved!", Toast.LENGTH_SHORT).show();
-                    mNameList.add(inputName);
-                    mArrayAdapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(getApplicationContext(), inputName + " not saved!", Toast.LENGTH_SHORT).show();
+                if(!inputName.equals("")) { // Ignore if no input
+                    // Puts it into memory
+                    SharedPreferences.Editor e = mSharedPreferences.edit();
+                    e.putString(NOTE_KEY,inputName);
+                    if(e.commit()) {
+                        Toast.makeText(getApplicationContext(), inputName + " saved!", Toast.LENGTH_SHORT).show();
+                        mNameList.add(inputName);
+                        mArrayAdapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(getApplicationContext(), inputName + " not saved!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -117,7 +117,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         String noteName = mNameList.get(position).toString();
         // Log the item's position and contents to the console in Debug
-        Log.d("omg android", position + ": " + noteName);
+        Log.d("WhereIsIt ", position + ": " + noteName);
         Toast.makeText(getApplicationContext(), noteName + " clicked!", Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this, DisplayMessageActivity.class);

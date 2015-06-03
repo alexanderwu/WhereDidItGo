@@ -6,21 +6,18 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 public class DisplayMessageActivity extends ActionBarActivity {
-    public static final String PREFS_NAME = "MyPrefsFile";
+    public static final String PREF = "Prefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_message);
 
-        // Get Handle to UI elements
         TextView title = (TextView) findViewById(R.id.note_title);
         TextView textView = (TextView) findViewById(R.id.display_message);
-        Button editButton = (Button) findViewById(R.id.edit_button);
 
         // Load title
         Bundle extras = getIntent().getExtras();
@@ -30,18 +27,15 @@ public class DisplayMessageActivity extends ActionBarActivity {
         }
 
         // Load my message
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settings = getSharedPreferences(PREF, MODE_PRIVATE);
         String message = settings.getString("myNote","");
         textView.setText(message);
 
-        //Create the editButton
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), EditMessageActivity.class);
-                startActivity(intent);
-            }
-        });
+    }
+
+    public void editMessage(View view) { // Clicking the "Edit Message" button
+        Intent intent = new Intent(view.getContext(), EditMessageActivity.class);
+        startActivity(intent);
     }
 
     @Override

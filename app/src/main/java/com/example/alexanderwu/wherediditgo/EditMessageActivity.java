@@ -9,15 +9,14 @@ import android.view.View;
 import android.widget.EditText;
 
 public class EditMessageActivity extends ActionBarActivity {
-    public static final String PREFS_NAME = "MyPrefsFile";
-    //public final static String EXTRA_MESSAGE = "com.example.alexanderwu.wherediditgo.MESSAGE";
+    public static final String PREF= "Prefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_message);
         // Get your saved message
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settings = getSharedPreferences(PREF, 0);
         String message = settings.getString("myNote","");
         // Put message in editText
         EditText editText = (EditText) findViewById(R.id.edit_message);
@@ -31,7 +30,7 @@ public class EditMessageActivity extends ActionBarActivity {
 
         // We need an Editor object to make preference changes.
         // All objects are from android.context.Context
-        SharedPreferences myNotes = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences myNotes = getSharedPreferences(PREF, 0);
         SharedPreferences.Editor editor = myNotes.edit();
         editor.putString("myNote",message);
         // Commit the edits!
