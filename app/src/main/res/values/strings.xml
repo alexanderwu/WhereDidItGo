@@ -3,6 +3,7 @@
     <string name="edit_message">Where is it?</string>
     <string name="button_save">Save</string>
     <string name="button_new_note">New Note</string>
+    <string name="delete_notes">Reset</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_display_message">My Message</string>
@@ -11,4 +12,5 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_edit_message">EditMessageActivity</string>
+
 </resources>

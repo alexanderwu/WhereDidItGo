@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 public class EditMessageActivity extends ActionBarActivity {
     public static final String PREFS_NAME = "MyPrefsFile";
-    public final static String EXTRA_MESSAGE = "com.example.alexanderwu.wherediditgo.MESSAGE";
+    //public final static String EXTRA_MESSAGE = "com.example.alexanderwu.wherediditgo.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +25,7 @@ public class EditMessageActivity extends ActionBarActivity {
     }
 
     public void saveMessage(View view) {
+        // Load message onto editText
         EditText editText = (EditText) findViewById(R.id.edit_message);
         String message = editText.getText().toString();
 
@@ -33,7 +34,6 @@ public class EditMessageActivity extends ActionBarActivity {
         SharedPreferences myNotes = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = myNotes.edit();
         editor.putString("myNote",message);
-
         // Commit the edits!
         editor.commit();
 
@@ -44,11 +44,6 @@ public class EditMessageActivity extends ActionBarActivity {
 
     public void viewMessage(View view) {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
-        // Get myNote from SharedPreferences
-        //SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        //String message = settings.getString("myNote","");
-        //intent.putExtra(EXTRA_MESSAGE, message);
-
         startActivity(intent);
     }
 
