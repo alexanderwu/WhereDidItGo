@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class MyActivity extends ActionBarActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
-    public static final int LIST_SIZE = 5;
+    public static final int LIST_SIZE = 20;
 
     public static final String PREF = "Prefs";
 

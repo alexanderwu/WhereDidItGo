@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Title"
+        android:text="@string/display_activity_title"
         android:id="@+id/note_title"
         android:textStyle="bold"
         android:gravity="center_horizontal" />
@@ -30,24 +30,25 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/display_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Empty note" />
+                android:hint="@string/display_message_hint" />
 
             <ImageView
                 android:id="@+id/viewImage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="450dp"
                 android:src="@android:drawable/ic_menu_camera"  />
 
             <Button
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="selectImage"
                 android:text="@string/take_picture"
                 android:id="@+id/picture_button" />
 

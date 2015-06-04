@@ -10,8 +10,10 @@
     <string name="button_edit">Edit Message</string>
     <string name="view_message">View note</string>
     <string name="take_picture">Take picture</string>
-
+    <string name="display_message_hint">Empty note</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_edit_message">EditMessageActivity</string>
+    <string name="display_activity_title">Title</string>
+
 
 </resources>
