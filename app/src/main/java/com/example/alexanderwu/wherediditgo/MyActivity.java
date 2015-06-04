@@ -21,9 +21,11 @@ import java.util.ArrayList;
 
 public class MyActivity extends ActionBarActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+    public static final int LIST_SIZE = 5;
+
     public static final String PREF = "Prefs";
 
-    public static final String NOTE_KEY = "NoteKey";
+    public static final String NOTE_KEY= "NoteKey";
     public static final String COUNT_KEY = "Count";
     SharedPreferences mSharedPreferences;
 
@@ -35,10 +37,8 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
-        // Get Handle to UI elements
         ListView mainListView = (ListView) findViewById(R.id.listView);
 
-        // ### Working on this part:
         // Create an ArrayAdapter for the ListView
         mArrayAdapter = new ArrayAdapter(this,
                         android.R.layout.simple_list_item_1,
@@ -53,9 +53,12 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
     }
     // ###
     public void loadData() {
-        String note = mSharedPreferences.getString(NOTE_KEY, "Bike");
+        //String note = mSharedPreferences.getString(NOTE_KEY, "Bike");
         int count = mSharedPreferences.getInt(COUNT_KEY,0);
-        mNameList.add(note);
+        for(int i=1; i<=count; i++) {
+            String note = mSharedPreferences.getString(NOTE_KEY + Integer.toString(i),"failed");
+            mNameList.add(note);
+        }
         mArrayAdapter.notifyDataSetChanged();
         Toast.makeText(getApplicationContext(), count + " notes were saved!", Toast.LENGTH_SHORT).show();
     }
@@ -64,6 +67,11 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
     //public void addNote() {}
 
     public void newMessage(View view) {
+        int count = mSharedPreferences.getInt(COUNT_KEY,0);
+        if(count >= LIST_SIZE) {
+            Toast.makeText(getApplicationContext(), "List is full", Toast.LENGTH_SHORT).show();
+            return;
+        }
         // Dialog
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Hello");
@@ -77,11 +85,14 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 // Grab the EditText's input
                 String inputName = input.getText().toString();
                 if(!inputName.equals("")) { // Ignore if no input
+                    int count = mSharedPreferences.getInt(COUNT_KEY,0);
+                    count++;
                     // Puts it into memory
                     SharedPreferences.Editor e = mSharedPreferences.edit();
-                    e.putString(NOTE_KEY,inputName);
+                    e.putInt(COUNT_KEY,count);
+                    e.putString(NOTE_KEY + count,inputName);
                     if(e.commit()) {
-                        Toast.makeText(getApplicationContext(), inputName + " saved!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), count + ": " + inputName + " saved!", Toast.LENGTH_SHORT).show();
                         mNameList.add(inputName);
                         mArrayAdapter.notifyDataSetChanged();
                     } else {
