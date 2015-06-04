@@ -24,10 +24,13 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
     public static final int LIST_SIZE = 20;
 
     public static final String PREF = "Prefs";
+    public static final String COUNT_KEY = "Count";
 
     public static final String CURRENT_POS = "CurrentPosition";
+    public static final String MESSAGE_KEY = "MessageKey";
     public static final String NOTE_KEY= "NoteKey";
-    public static final String COUNT_KEY = "Count";
+    public static final String IMAGE_PATH_KEY = "ImagePath";
+
     SharedPreferences mSharedPreferences;
 
     ArrayAdapter mArrayAdapter;
@@ -58,21 +61,33 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 String noteName = mNameList.get(position).toString();
                 AlertDialog.Builder builder = new AlertDialog.Builder(MyActivity.this);
                 builder.setTitle("Delete note").setMessage("Delete " + noteName + "?")
-                        .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
 
-                                int count = mSharedPreferences.getInt(COUNT_KEY,0);
-                                for(int i=positionToRemove; i<count; i++) {
-
+                                int count = mSharedPreferences.getInt(COUNT_KEY, 0);
+                                SharedPreferences.Editor e = mSharedPreferences.edit();
+                                for (int i = positionToRemove + 1; i < count; i++) {
+                                    String note = mSharedPreferences.getString(NOTE_KEY + Integer.toString(i+1), "Title");
+                                    String message = mSharedPreferences.getString(MESSAGE_KEY + Integer.toString(i+1), "");
+                                    String image_path = mSharedPreferences.getString(IMAGE_PATH_KEY + Integer.toString(i+1), "invalid");
+                                    e.putString(NOTE_KEY + i, note);
+                                    e.putString(MESSAGE_KEY + i, message);
+                                    e.putString(IMAGE_PATH_KEY + i, image_path);
                                 }
-
-
-                                mNameList.remove(positionToRemove);
-                                mArrayAdapter.notifyDataSetChanged();
+                                e.putString(NOTE_KEY + count,"");
+                                e.putString(MESSAGE_KEY + count,"");
+                                e.putString(IMAGE_PATH_KEY + count,"invalid");
+                                e.putInt(COUNT_KEY,count-1);
+                                if (e.commit()) {
+                                    mNameList.remove(positionToRemove);
+                                    mArrayAdapter.notifyDataSetChanged();
+                                } else {
+                                    //Toast.makeText(getApplicationContext(), "Unable to remove", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         })
-                        .setNegativeButton("No",new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();
                             }
                         });
@@ -135,8 +150,8 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
     public void deleteNotes(View view) { // from pressing "Reset" button
         AlertDialog.Builder builder = new AlertDialog.Builder(MyActivity.this);
         builder.setTitle("Reset").setMessage("Are you sure?")
-        .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int id) {
+        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
                 SharedPreferences.Editor e = mSharedPreferences.edit();
                 e.clear();
                 e.commit();
@@ -144,8 +159,8 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 mArrayAdapter.notifyDataSetChanged();
             }
         })
-        .setNegativeButton("No",new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int id) {
+        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
             }
         });

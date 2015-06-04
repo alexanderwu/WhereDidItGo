@@ -68,7 +68,8 @@ public class DisplayMessageActivity extends ActionBarActivity {
 
             viewImage.setImageBitmap(bitmap);
         } else {
-            //Toast.makeText(this, "There was an error loading the file", Toast.LENGTH_LONG).show();
+
+            Toast.makeText(this, "Error: " + filePath, Toast.LENGTH_LONG).show();
         }
     }
 
