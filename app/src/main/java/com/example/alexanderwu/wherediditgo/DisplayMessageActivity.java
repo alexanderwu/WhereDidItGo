@@ -7,28 +7,37 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DisplayMessageActivity extends ActionBarActivity {
     public static final String PREF = "Prefs";
+
+    public static final String CURRENT_POS = "CurrentPosition";
+    public static final String NOTE_KEY= "NoteKey";
+    public static final String MESSAGE_KEY = "MessageKey";
+
+    SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_message);
 
-        TextView title = (TextView) findViewById(R.id.note_title);
+        TextView titleView = (TextView) findViewById(R.id.note_title);
         TextView textView = (TextView) findViewById(R.id.display_message);
 
-        // Load title
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String value = extras.getString("title");
-            title.setText(value);
-        }
+        mSharedPreferences = getSharedPreferences(PREF, MODE_PRIVATE);
+
+        int currentPosition = mSharedPreferences.getInt(CURRENT_POS,-1);
+        if(currentPosition == -1)
+            Toast.makeText(getApplicationContext(), "CURRENT_POS not found!", Toast.LENGTH_SHORT).show();
+
+        //Set Title
+        String title = mSharedPreferences.getString(NOTE_KEY + currentPosition,"Title");
+        titleView.setText(title);
 
         // Load my message
-        SharedPreferences settings = getSharedPreferences(PREF, MODE_PRIVATE);
-        String message = settings.getString("myNote","");
+        String message = mSharedPreferences.getString(MESSAGE_KEY + currentPosition,"");
         textView.setText(message);
 
     }

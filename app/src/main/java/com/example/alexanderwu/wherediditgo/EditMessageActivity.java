@@ -7,19 +7,31 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class EditMessageActivity extends ActionBarActivity {
-    public static final String PREF= "Prefs";
+    public static final String PREF = "Prefs";
+
+    public static final String CURRENT_POS = "CurrentPosition";
+    public static final String MESSAGE_KEY = "MessageKey";
+
+    SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_message);
-        // Get your saved message
-        SharedPreferences settings = getSharedPreferences(PREF, 0);
-        String message = settings.getString("myNote","");
-        // Put message in editText
+
         EditText editText = (EditText) findViewById(R.id.edit_message);
+
+        mSharedPreferences = getSharedPreferences(PREF, MODE_PRIVATE);
+
+        int currentPosition = mSharedPreferences.getInt(CURRENT_POS,-1);
+        if(currentPosition == -1)
+            Toast.makeText(getApplicationContext(), "CURRENT_POS not found!", Toast.LENGTH_SHORT).show();
+
+        // Put saved message in editText
+        String message = mSharedPreferences.getString(MESSAGE_KEY + currentPosition,"");
         editText.setText(message);
     }
 
@@ -30,11 +42,11 @@ public class EditMessageActivity extends ActionBarActivity {
 
         // We need an Editor object to make preference changes.
         // All objects are from android.context.Context
-        SharedPreferences myNotes = getSharedPreferences(PREF, 0);
-        SharedPreferences.Editor editor = myNotes.edit();
-        editor.putString("myNote",message);
-        // Commit the edits!
-        editor.commit();
+
+        int currentPosition = mSharedPreferences.getInt(CURRENT_POS,-1);
+        SharedPreferences.Editor e = mSharedPreferences.edit();
+        e.putString(MESSAGE_KEY + currentPosition, message);
+        e.commit();
 
         // Go back to DisplayMessageActivity
         Intent intent = new Intent(this, DisplayMessageActivity.class);

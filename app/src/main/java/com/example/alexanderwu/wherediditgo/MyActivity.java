@@ -25,6 +25,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
 
     public static final String PREF = "Prefs";
 
+    public static final String CURRENT_POS = "CurrentPosition";
     public static final String NOTE_KEY= "NoteKey";
     public static final String COUNT_KEY = "Count";
     SharedPreferences mSharedPreferences;
@@ -51,20 +52,15 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
 
         mainListView.setOnItemClickListener(this);
     }
-    // ###
+
     public void loadData() {
-        //String note = mSharedPreferences.getString(NOTE_KEY, "Bike");
         int count = mSharedPreferences.getInt(COUNT_KEY,0);
         for(int i=1; i<=count; i++) {
             String note = mSharedPreferences.getString(NOTE_KEY + Integer.toString(i),"failed");
             mNameList.add(note);
         }
         mArrayAdapter.notifyDataSetChanged();
-        Toast.makeText(getApplicationContext(), count + " notes were saved!", Toast.LENGTH_SHORT).show();
     }
-    // ###
-
-    //public void addNote() {}
 
     public void newMessage(View view) {
         int count = mSharedPreferences.getInt(COUNT_KEY,0);
@@ -131,9 +127,16 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         Log.d("WhereIsIt ", position + ": " + noteName);
         Toast.makeText(getApplicationContext(), noteName + " clicked!", Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        intent.putExtra("title",noteName);
-        startActivity(intent);
+        SharedPreferences.Editor e = mSharedPreferences.edit();
+        e.putInt(CURRENT_POS,position + 1); // + 1 because list position starts count at 0
+        if(e.commit()) {
+            Intent intent = new Intent(this, DisplayMessageActivity.class);
+            //intent.putExtra("title",noteName);
+            //intent.putExtra("listPosition",position);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(),"Failure!!!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
