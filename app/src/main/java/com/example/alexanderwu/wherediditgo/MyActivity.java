@@ -51,9 +51,38 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         loadData();
 
         mainListView.setOnItemClickListener(this);
-    }
+        mainListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final int positionToRemove = position;
+                String noteName = mNameList.get(position).toString();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MyActivity.this);
+                builder.setTitle("Delete note").setMessage("Delete " + noteName + "?")
+                        .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
 
-    public void loadData() {
+                                int count = mSharedPreferences.getInt(COUNT_KEY,0);
+                                for(int i=positionToRemove; i<count; i++) {
+
+                                }
+
+
+                                mNameList.remove(positionToRemove);
+                                mArrayAdapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.show();
+                return false;
+            }
+        });
+     }
+
+    public void loadData() { // from OnCreate
         int count = mSharedPreferences.getInt(COUNT_KEY,0);
         for(int i=1; i<=count; i++) {
             String note = mSharedPreferences.getString(NOTE_KEY + Integer.toString(i),"failed");
@@ -62,7 +91,7 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         mArrayAdapter.notifyDataSetChanged();
     }
 
-    public void newMessage(View view) {
+    public void newMessage(View view) { // from pressing "New Note" Button
         int count = mSharedPreferences.getInt(COUNT_KEY,0);
         if(count >= LIST_SIZE) {
             Toast.makeText(getApplicationContext(), "List is full", Toast.LENGTH_SHORT).show();
@@ -97,22 +126,30 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 }
             }
         });
-        // Make a "Cancel" button that simply dismisses the alert
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {}
         });
         alert.show();
-
-        //Intent intent = new Intent(this, DisplayMessageActivity.class);
-        //startActivity(intent);
     }
 
-    public void deleteNotes(View view) {
-        SharedPreferences.Editor e = mSharedPreferences.edit();
-        e.clear();
-        e.commit();
-        mArrayAdapter.clear();
-        mArrayAdapter.notifyDataSetChanged();
+    public void deleteNotes(View view) { // from pressing "Reset" button
+        AlertDialog.Builder builder = new AlertDialog.Builder(MyActivity.this);
+        builder.setTitle("Reset").setMessage("Are you sure?")
+        .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                SharedPreferences.Editor e = mSharedPreferences.edit();
+                e.clear();
+                e.commit();
+                mArrayAdapter.clear();
+                mArrayAdapter.notifyDataSetChanged();
+            }
+        })
+        .setNegativeButton("No",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -125,14 +162,11 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
         String noteName = mNameList.get(position).toString();
         // Log the item's position and contents to the console in Debug
         Log.d("WhereIsIt ", position + ": " + noteName);
-        Toast.makeText(getApplicationContext(), noteName + " clicked!", Toast.LENGTH_SHORT).show();
 
         SharedPreferences.Editor e = mSharedPreferences.edit();
         e.putInt(CURRENT_POS,position + 1); // + 1 because list position starts count at 0
         if(e.commit()) {
             Intent intent = new Intent(this, DisplayMessageActivity.class);
-            //intent.putExtra("title",noteName);
-            //intent.putExtra("listPosition",position);
             startActivity(intent);
         } else {
             Toast.makeText(getApplicationContext(),"Failure!!!", Toast.LENGTH_SHORT).show();

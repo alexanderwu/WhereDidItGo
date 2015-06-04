@@ -27,7 +27,6 @@ public class DisplayMessageActivity extends ActionBarActivity {
     public static final String NOTE_KEY= "NoteKey";
     public static final String MESSAGE_KEY = "MessageKey";
     public static final String IMAGE_PATH_KEY = "ImagePath";
-    public static final String BOOL_KEY = "Bool";
 
     SharedPreferences mSharedPreferences;
 
@@ -62,9 +61,8 @@ public class DisplayMessageActivity extends ActionBarActivity {
 
     public void loadImage() {
         int currentPosition = mSharedPreferences.getInt(CURRENT_POS,-1);
-        boolean isImage = mSharedPreferences.getBoolean(BOOL_KEY + currentPosition,false);
-        if(isImage) {
-            String filePath = mSharedPreferences.getString(IMAGE_PATH_KEY + currentPosition,"");
+        String filePath = mSharedPreferences.getString(IMAGE_PATH_KEY + currentPosition,"invalid");
+        if(!filePath.equals("invalid") ) {
             BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
             Bitmap bitmap = BitmapFactory.decodeFile(filePath, bitmapOptions);
 
@@ -137,7 +135,6 @@ public class DisplayMessageActivity extends ActionBarActivity {
                     int currentPosition = mSharedPreferences.getInt(CURRENT_POS,-1);
                     SharedPreferences.Editor e = mSharedPreferences.edit();
                     e.putString(IMAGE_PATH_KEY + currentPosition, picturePath);
-                    e.putBoolean(BOOL_KEY + currentPosition,true);
                     if(e.commit()) {
                         Toast.makeText(this, "This file was saved at "+ picturePath, Toast.LENGTH_LONG).show();
                     } else {
@@ -164,7 +161,6 @@ public class DisplayMessageActivity extends ActionBarActivity {
                 int currentPosition = mSharedPreferences.getInt(CURRENT_POS,-1);
                 SharedPreferences.Editor e = mSharedPreferences.edit();
                 e.putString(IMAGE_PATH_KEY + currentPosition, picturePath);
-                e.putBoolean(BOOL_KEY + currentPosition, true);
                 if(e.commit()) {
                     Toast.makeText(this, "This file was saved at "+ picturePath, Toast.LENGTH_LONG).show();
                 } else {

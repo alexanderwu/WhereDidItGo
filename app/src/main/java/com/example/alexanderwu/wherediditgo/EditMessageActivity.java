@@ -40,20 +40,12 @@ public class EditMessageActivity extends ActionBarActivity {
         EditText editText = (EditText) findViewById(R.id.edit_message);
         String message = editText.getText().toString();
 
-        // We need an Editor object to make preference changes.
-        // All objects are from android.context.Context
-
         int currentPosition = mSharedPreferences.getInt(CURRENT_POS,-1);
         SharedPreferences.Editor e = mSharedPreferences.edit();
         e.putString(MESSAGE_KEY + currentPosition, message);
         e.commit();
 
         // Go back to DisplayMessageActivity
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        startActivity(intent);
-    }
-
-    public void viewMessage(View view) {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
         startActivity(intent);
     }
