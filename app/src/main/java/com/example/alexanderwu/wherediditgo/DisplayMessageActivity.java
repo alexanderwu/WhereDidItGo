@@ -63,12 +63,14 @@ public class DisplayMessageActivity extends ActionBarActivity {
         int currentPosition = mSharedPreferences.getInt(CURRENT_POS,-1);
         String filePath = mSharedPreferences.getString(IMAGE_PATH_KEY + currentPosition,"invalid");
         if(!filePath.equals("invalid") ) {
+
+            // Load image and scale it
             BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-            Bitmap bitmap = BitmapFactory.decodeFile(filePath, bitmapOptions);
-
-            viewImage.setImageBitmap(bitmap);
+            Bitmap d = BitmapFactory.decodeFile(filePath, bitmapOptions);
+            int nh = (int) ( d.getHeight() * (512.0 / d.getWidth()) );
+            Bitmap scaled = Bitmap.createScaledBitmap(d, 512, nh, true);
+            viewImage.setImageBitmap(scaled);
         } else {
-
             Toast.makeText(this, "Error: " + filePath, Toast.LENGTH_LONG).show();
         }
     }
@@ -142,9 +144,12 @@ public class DisplayMessageActivity extends ActionBarActivity {
                         Toast.makeText(getApplicationContext(), "Image not saved!", Toast.LENGTH_SHORT).show();
                     }
 
+                    // Load image and scale it
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-                    Bitmap bitmap = BitmapFactory.decodeFile(picturePath, bitmapOptions);
-                    viewImage.setImageBitmap(bitmap);
+                    Bitmap d = BitmapFactory.decodeFile(picturePath, bitmapOptions);
+                    int nh = (int) ( d.getHeight() * (512.0 / d.getWidth()) );
+                    Bitmap scaled = Bitmap.createScaledBitmap(d, 512, nh, true);
+                    viewImage.setImageBitmap(scaled);
                 } else {
                     Toast.makeText(this, "There was an error saving the file", Toast.LENGTH_LONG).show();
                 }
@@ -168,9 +173,12 @@ public class DisplayMessageActivity extends ActionBarActivity {
                     Toast.makeText(getApplicationContext(), "Image not saved!", Toast.LENGTH_SHORT).show();
                 }
 
+                // Load image and scale it
                 BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-                Bitmap bitmap = BitmapFactory.decodeFile(picturePath, bitmapOptions);
-                viewImage.setImageBitmap(bitmap);
+                Bitmap d = BitmapFactory.decodeFile(picturePath, bitmapOptions);
+                int nh = (int) ( d.getHeight() * (512.0 / d.getWidth()) );
+                Bitmap scaled = Bitmap.createScaledBitmap(d, 512, nh, true);
+                viewImage.setImageBitmap(scaled);
             }
         }
     }
